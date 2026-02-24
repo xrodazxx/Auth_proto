@@ -2,30 +2,55 @@ syntax = "proto3";
 
 package auth;
 option go_package = "guide.auth.v1;authv1";
+
 service Auth {
     rpc Register (RegisterRequest) returns (RegisterResponse);
     rpc Login (LoginRequest) returns (LoginResponse);
-    rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
-}
-message RegisterRequest {
-    string email =1; //Email of the user to register.
-    string password = 2; // Password of the user to register.
-}
-message  RegisterResponse  {
-    int64 user_id = 1; // User ID of the registered user.
-}
-message LoginRequest {
-  string email = 1; //Email of the user to login.
-  string password = 2; // Password of the user to login.
-  int32 app_id = 3; // ID of the app to login to.
-}
-message LoginResponse {
-    string token =1; // Auth token of the logged in user.
-}
-message IsAdminRequest {
-    int64 user_id =1; // User ID to admin
-}
-message IsAdminResponse {
-    bool is_admin =1; // Indicates whether the user is an admin.
+    rpc Logout (LogoutRequest) returns (LogoutResponse);
+    rpc SendVerifyEmail (SendVerifyRequest) returns (SendVerifyResponse);
+    rpc VerifyEmail (VerifyEmailRequest) returns (VerifyEmailResponse);
 }
 
+message RegisterRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message RegisterResponse {
+    int64 user_id = 1;
+}
+
+message LoginRequest {
+    string email = 1;
+    string password = 2;
+    int32 app_id = 3;
+}
+
+message LoginResponse {
+    string access_token = 1;
+    string refresh_token = 2;
+}
+
+message LogoutRequest {
+    string token = 1;
+}
+
+message LogoutResponse {
+    bool success = 1;
+}
+
+message SendVerifyRequest {
+    string email = 1;
+}
+
+message SendVerifyResponse {
+    bool sent = 1;
+}
+
+message VerifyEmailRequest {
+    string verification_token = 1;
+}
+
+message VerifyEmailResponse {
+    bool verified = 1;
+}
