@@ -12,6 +12,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -39,7 +40,7 @@ type AuthClient interface {
 	SendVerifyEmail(ctx context.Context, in *SendVerifyRequest, opts ...grpc.CallOption) (*SendVerifyResponse, error)
 	VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*VerifyEmailResponse, error)
 	ReqPasswordReset(ctx context.Context, in *ReqPasswordResetRequest, opts ...grpc.CallOption) (*ReqPasswordResetResponse, error)
-	ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*ResetPasswordResponse, error)
+	ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type authClient struct {
@@ -110,9 +111,9 @@ func (c *authClient) ReqPasswordReset(ctx context.Context, in *ReqPasswordResetR
 	return out, nil
 }
 
-func (c *authClient) ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*ResetPasswordResponse, error) {
+func (c *authClient) ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ResetPasswordResponse)
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, Auth_ResetPassword_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -130,7 +131,7 @@ type AuthServer interface {
 	SendVerifyEmail(context.Context, *SendVerifyRequest) (*SendVerifyResponse, error)
 	VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error)
 	ReqPasswordReset(context.Context, *ReqPasswordResetRequest) (*ReqPasswordResetResponse, error)
-	ResetPassword(context.Context, *ResetPasswordRequest) (*ResetPasswordResponse, error)
+	ResetPassword(context.Context, *ResetPasswordRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedAuthServer()
 }
 
@@ -159,7 +160,7 @@ func (UnimplementedAuthServer) VerifyEmail(context.Context, *VerifyEmailRequest)
 func (UnimplementedAuthServer) ReqPasswordReset(context.Context, *ReqPasswordResetRequest) (*ReqPasswordResetResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ReqPasswordReset not implemented")
 }
-func (UnimplementedAuthServer) ResetPassword(context.Context, *ResetPasswordRequest) (*ResetPasswordResponse, error) {
+func (UnimplementedAuthServer) ResetPassword(context.Context, *ResetPasswordRequest) (*emptypb.Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method ResetPassword not implemented")
 }
 func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}
