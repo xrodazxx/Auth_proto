@@ -9,6 +9,8 @@ service Auth {
     rpc Logout (LogoutRequest) returns (LogoutResponse);
     rpc SendVerifyEmail (SendVerifyRequest) returns (SendVerifyResponse);
     rpc VerifyEmail (VerifyEmailRequest) returns (VerifyEmailResponse);
+    rpc ReqPasswordReset (ReqPasswordResetRequest) returns (ReqPasswordResetResponse);
+    rpc ResetPassword (ResetPasswordRequest) returns (ResetPasswordResponse);
 }
 
 message RegisterRequest {
@@ -53,4 +55,17 @@ message VerifyEmailRequest {
 
 message VerifyEmailResponse {
     bool verified = 1;
+}
+message ReqPasswordResetRequest {
+  string email=1;
+}
+message ReqPasswordResetResponse {
+  bool sent =1;
+}
+message ResetPasswordRequest{
+    string reset_token=1;
+    string new_password=2;
+}
+message ResetPasswordResponse{
+    bool success =1;
 }
